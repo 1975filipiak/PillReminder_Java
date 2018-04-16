@@ -3,4 +3,8 @@
     <string name="dose_ml">ml</string>
     <string name="dose_szt">szt</string>
     <string name="dose_drop">krople</string>
+    <string name="editor_insert_medicine_successful">Medicine saved</string>
+
+    <!-- Toast message in editor when new pet has failed to be inserted [CHAR LIMIT=NONE] -->
+    <string name="editor_insert_medicine_failed">Error with saving medicine</string>
 </resources>

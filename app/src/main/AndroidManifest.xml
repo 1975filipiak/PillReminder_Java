@@ -46,11 +46,17 @@
         <activity
             android:name=".AddMedicine"
             android:parentActivityName=".StoreActivity">
+
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".StoreActivity" />
         </activity>
+        <activity android:name=".CheckStoreActivity"></activity>
+        <provider
+            android:name="com.pum2018.pillreminder_java.Data.MedicineProvider"
+            android:authorities="com.pum2018.pillreminder_java"
+            android:exported="false" />
     </application>
 
 </manifest>
