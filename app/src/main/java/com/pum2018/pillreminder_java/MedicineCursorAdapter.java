@@ -103,6 +103,7 @@ public class MedicineCursorAdapter extends CursorAdapter {
               break;
         }
         nameTextView.setText(medicineName);
+        //summaryTextView.setText(String.valueOf(medicineType));
         summaryTextView.setText(String.valueOf(medQuantityCalculated));
         quantityTextView.setText(String.valueOf(medicineQuantity));
     }

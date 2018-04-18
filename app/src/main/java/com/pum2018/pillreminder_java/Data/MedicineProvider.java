@@ -70,6 +70,7 @@ public class MedicineProvider extends ContentProvider{
             case MEDICINE:
                 return insertMedicine(uri, contentValues);
             default:
+                Log.e(LOG_TAG, "Failed HERE " + uri);
                 throw new IllegalArgumentException("Insertion is not supported for " + uri);
         }
     }
@@ -87,13 +88,15 @@ public class MedicineProvider extends ContentProvider{
             throw new IllegalArgumentException("Medicine requires valid type");
         }
 
-        // If the quantity is provided, check that it's greater than or equal to 0 kg
+        // If the quantity is provided, check that it's greater than or equal to 0
         Integer quantity = values.getAsInteger(MedicineContract.Medicine.COLUMN_MEDICINE_QUANTITY);
         if (quantity != null && quantity < 0) {
             throw new IllegalArgumentException("Medicine requires valid quantity");
         }
 
         SQLiteDatabase database = dbHelper.getWritableDatabase();
+
+
 
         long id = database.insert(MedicineContract.Medicine.TABLE_NAME, null, values);
         // If the ID is -1, then the insertion failed. Log an error and return null.
@@ -106,9 +109,35 @@ public class MedicineProvider extends ContentProvider{
         return ContentUris.withAppendedId(uri, id);
     }
 
+    /**
+     * Delete the data at the given selection and selection arguments.
+     */
     @Override
-    public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
-        return 0;
+    public int delete(Uri uri, String selection, String[] selectionArgs) {
+        int rowsDeleted;
+        SQLiteDatabase database = dbHelper.getWritableDatabase();
+
+        final int match = sUriMatcher.match(uri);
+        switch (match) {
+            case MEDICINE:
+                // Delete all rows that match the selection and selection args
+                rowsDeleted =  database.delete(MedicineContract.Medicine.TABLE_NAME, selection, selectionArgs);
+                if (rowsDeleted != 0) {
+                    getContext().getContentResolver().notifyChange(uri, null);
+                }
+                return rowsDeleted;
+            case MEDICINE_ID:
+                // Delete a single row given by the ID in the URI
+                selection = MedicineContract.Medicine._ID + "=?";
+                selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
+                rowsDeleted =  database.delete(MedicineContract.Medicine.TABLE_NAME, selection, selectionArgs);
+                if (rowsDeleted != 0) {
+                    getContext().getContentResolver().notifyChange(uri, null);
+                }
+                return rowsDeleted;
+            default:
+                throw new IllegalArgumentException("Deletion is not supported for " + uri);
+        }
     }
 
     /**

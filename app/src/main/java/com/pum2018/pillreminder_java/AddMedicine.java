@@ -1,5 +1,6 @@
 package com.pum2018.pillreminder_java;
 
+import android.annotation.SuppressLint;
 import android.app.LoaderManager;
 import android.content.ContentValues;
 import android.content.CursorLoader;
@@ -21,6 +22,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -35,8 +37,8 @@ public class AddMedicine extends AppCompatActivity implements LoaderManager.Load
 
     RadioGroup rg1, rg2;
     EditText editQuantity, editMedicine;
-    int chkId1 = 0, chkId2 = 0;
-    int realCheck;
+    int chkId1, chkId2 = 0;
+    int realCheck = 0;
 
     private boolean mMedicineHasChanged = false;
 
@@ -48,6 +50,7 @@ public class AddMedicine extends AppCompatActivity implements LoaderManager.Load
         }
     };
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,6 +89,12 @@ public class AddMedicine extends AppCompatActivity implements LoaderManager.Load
         rg2.clearCheck();
         rg1.setOnCheckedChangeListener(listener1);
         rg2.setOnCheckedChangeListener(listener2);
+        Toast.makeText(this,"AddMedicine just created",Toast.LENGTH_LONG).show();
+        Log.i("chkId1", ": " + chkId1);
+        Log.i("chkId2", ": " + chkId2);
+        Log.i("realCheck", ": " + realCheck);
+        Log.i("realCheck", ": " + rg1.getCheckedRadioButtonId());
+        Log.i("realCheck", ": " + rg2.getCheckedRadioButtonId());
     }
 
     private RadioGroup.OnCheckedChangeListener listener1 = new RadioGroup.OnCheckedChangeListener() {
@@ -94,7 +103,8 @@ public class AddMedicine extends AppCompatActivity implements LoaderManager.Load
         public void onCheckedChanged(RadioGroup group, int checkedId) {
             if (checkedId != 0) {
                 rg2.setOnCheckedChangeListener(null);
-                chkId1 = rg1.getCheckedRadioButtonId();
+                chkId1 = rg1.indexOfChild(findViewById(rg1.getCheckedRadioButtonId())) + 1;
+                Log.i("chkId1", ": " + chkId1);
                 rg2.clearCheck();
                 rg2.setOnCheckedChangeListener(listener2);
 
@@ -108,7 +118,8 @@ public class AddMedicine extends AppCompatActivity implements LoaderManager.Load
         public void onCheckedChanged(RadioGroup group, int checkedId) {
             if (checkedId != 0) {
                 rg1.setOnCheckedChangeListener(null);
-                chkId2 = rg2.getCheckedRadioButtonId();
+                chkId2 = rg1.getChildCount() + rg2.indexOfChild(findViewById(rg2.getCheckedRadioButtonId())) +1;
+                Log.i("chkId2", ": " + chkId2);
                 rg1.clearCheck();
                 rg1.setOnCheckedChangeListener(listener1);
             }
@@ -132,7 +143,6 @@ public class AddMedicine extends AppCompatActivity implements LoaderManager.Load
             if (checkedRg1 != 0) {
                 rg1.clearCheck();
             }
-            ;
             if (checkedRg2 != 0) {
                 rg2.clearCheck();
             }
@@ -164,7 +174,7 @@ public class AddMedicine extends AppCompatActivity implements LoaderManager.Load
         values.put(MedicineContract.Medicine.COLUMN_MEDICINE_NAME, medicineName);
         values.put(MedicineContract.Medicine.COLUMN_MEDICINE_QUANTITY, medicineQuantity);
         values.put(MedicineContract.Medicine.COLUMN_MEDICINE_TYPE, medicineType);
-
+        if (mCurrentMedicineUri == null) {
             Uri newUri = getContentResolver().insert(MedicineContract.Medicine.CONTENT_URI, values);
 
             if (newUri == null) {
@@ -173,8 +183,33 @@ public class AddMedicine extends AppCompatActivity implements LoaderManager.Load
             } else {
                 Toast.makeText(this, getString(R.string.editor_insert_medicine_successful),
                         Toast.LENGTH_SHORT).show();
-           }
+            }
+        } else {
+            int rowsAffected = getContentResolver().update(mCurrentMedicineUri,values,null,null);
+
+            if (rowsAffected == 0) {
+                Toast.makeText(this, getString(R.string.editor_insert_medicine_failed),
+                        Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, getString(R.string.editor_insert_medicine_successful),
+                        Toast.LENGTH_SHORT).show();
+            }
+            finish();
+        }
     }
+
+    public void deleteMedicine(View view) {
+        if (mCurrentMedicineUri != null) {
+            int rowsDeleted = getContentResolver().delete(mCurrentMedicineUri, null, null);
+            if (rowsDeleted == 0) {
+                Toast.makeText(this, getString(R.string.editor_delete_medicine_failed),
+                        Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, getString(R.string.editor_delete_medicine_successful),
+                        Toast.LENGTH_SHORT).show();
+            }
+            finish();
+        }}
 
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         String[] projection = {
@@ -194,6 +229,7 @@ public class AddMedicine extends AppCompatActivity implements LoaderManager.Load
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        RadioButton radioButton;
         if (cursor == null || cursor.getCount() < 1) {
             return;
         }
@@ -211,6 +247,55 @@ public class AddMedicine extends AppCompatActivity implements LoaderManager.Load
             // Update the views on the screen with the values from the database
             editMedicine.setText(name);
             editQuantity.setText(quantity);
+            rg1.clearCheck();
+            rg2.clearCheck();
+            switch(type){
+                case 1 :
+                    radioButton = (RadioButton) findViewById(R.id.aerosol);
+                    radioButton.setChecked(true);
+                    break;
+                case 2 :
+                    radioButton = (RadioButton) findViewById(R.id.capsule);
+                    radioButton.setChecked(true);
+                    break;
+                case 3 :
+                    radioButton = (RadioButton) findViewById(R.id.drops);
+                    radioButton.setChecked(true);
+                    break;
+                case 4 :
+                    radioButton = (RadioButton) findViewById(R.id.globule);
+                    radioButton.setChecked(true);
+                    break;
+                case 5 :
+                    radioButton = (RadioButton) findViewById(R.id.injection);
+                    radioButton.setChecked(true);
+                    break;
+                case 6 :
+                    radioButton = (RadioButton) findViewById(R.id.insulin);
+                    radioButton.setChecked(true);
+                    break;
+                case 7 :
+                    radioButton = (RadioButton) findViewById(R.id.plaster);
+                    radioButton.setChecked(true);
+                    break;
+                case 8 :
+                    radioButton = (RadioButton) findViewById(R.id.sublingualtablet);
+                    radioButton.setChecked(true);
+                    break;
+                case 9 :
+                    radioButton = (RadioButton) findViewById(R.id.suppository);
+                    radioButton.setChecked(true);
+                    break;
+                case 10 :
+                    radioButton = (RadioButton) findViewById(R.id.syrup);
+                    radioButton.setChecked(true);
+                    break;
+                case 11 :
+                    radioButton = (RadioButton) findViewById(R.id.tablet);
+                    radioButton.setChecked(true);
+                    break;
+            }
+
         }
     }
 
