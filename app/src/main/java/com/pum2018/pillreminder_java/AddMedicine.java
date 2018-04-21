@@ -89,7 +89,7 @@ public class AddMedicine extends AppCompatActivity implements LoaderManager.Load
         rg2.clearCheck();
         rg1.setOnCheckedChangeListener(listener1);
         rg2.setOnCheckedChangeListener(listener2);
-        Toast.makeText(this,"AddMedicine just created",Toast.LENGTH_LONG).show();
+        //Toast.makeText(this,"AddMedicine just created",Toast.LENGTH_LONG).show();
         Log.i("chkId1", ": " + chkId1);
         Log.i("chkId2", ": " + chkId2);
         Log.i("realCheck", ": " + realCheck);
@@ -134,9 +134,9 @@ public class AddMedicine extends AppCompatActivity implements LoaderManager.Load
             realCheck = chkId1 == 0 ? chkId2 : chkId1;
             int checkedRg1, checkedRg2 = 0;
             Log.i("You pressed", ": " + realCheck);
-            Toast.makeText(this,"\tMedicine Name : "+ editMedicine.getText().toString()
-                    + "\n\tMedicine Type : " + realCheck
-                    + "\n\tMedicine Quantity : "+editQuantity.getText().toString(),Toast.LENGTH_LONG).show();
+//            Toast.makeText(this,"\tMedicine Name : "+ editMedicine.getText().toString()
+//                    + "\n\tMedicine Type : " + realCheck
+//                    + "\n\tMedicine Quantity : "+editQuantity.getText().toString(),Toast.LENGTH_LONG).show();
             saveMedicine();
             checkedRg1 = rg1.getCheckedRadioButtonId();
             checkedRg2 = rg2.getCheckedRadioButtonId();
@@ -161,7 +161,7 @@ public class AddMedicine extends AppCompatActivity implements LoaderManager.Load
 
     public void saveMedicineToStore(View view) {
         Log.i("ADD Medicine","Saving medicines to store");
-        Toast.makeText(this,"Saving medicine to store",Toast.LENGTH_LONG).show();
+        Toast.makeText(this,"Saving medicine to store",Toast.LENGTH_SHORT).show();
     }
 
 
