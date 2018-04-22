@@ -21,6 +21,14 @@ public class MedicineDBHelper extends SQLiteOpenHelper {
                 + MedicineContract.Medicine.COLUMN_MEDICINE_TYPE + " INTEGER NOT NULL, "
                 + MedicineContract.Medicine.COLUMN_MEDICINE_QUANTITY + " INTEGER NOT NULL DEFAULT 0);";
         db.execSQL(SQL_CREATE_ENTRIES);
+
+        String SQL_CREATE_ENTRIES_REPORT_TAKINGS = "CREATE TABLE " + MedicineContract.Report.TABLE_NAME  + " ("
+                + MedicineContract.Report._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + MedicineContract.Report.RTT_KEY_DATE + " TEXT NOT NULL, "
+                + MedicineContract.Report.RTT_KEY_MEDICINE_NAME + " TEXT NOT NULL, "
+                + MedicineContract.Report.RTT_KEY_PLANNED_TIME + " TEXT NOT NULL,"
+                + MedicineContract.Report.RTT_KEY_TAKING_TIME + " TEXT NOT NULL);";
+        db.execSQL(SQL_CREATE_ENTRIES_REPORT_TAKINGS);
     }
 
     @Override

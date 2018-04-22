@@ -9,11 +9,11 @@ public final class MedicineContract {
     public static final String CONTENT_AUTHORITY = "com.pum2018.pillreminder_java";
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
     public static final String PATH_MEDICINE = "Medicines";
+    public static final String PATH_REPORT_TAKINGS = "ReportTakings";
 
     public static final class Medicine implements BaseColumns{
 
         public static final Uri CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_MEDICINE);
-
 
         public static final String TABLE_NAME = "Medicines";
         public static final String _ID = BaseColumns._ID;
@@ -45,6 +45,15 @@ public final class MedicineContract {
         }
     }
 
+    public static final class Report implements BaseColumns{
 
+        public static final Uri CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_REPORT_TAKINGS);
 
+        public static final String TABLE_NAME = "ReportTakings";
+        public static final String _ID = BaseColumns._ID;
+        public static final String RTT_KEY_DATE = "date";
+        public static final String RTT_KEY_MEDICINE_NAME = "medicineName";
+        public static final String RTT_KEY_PLANNED_TIME = "plannedTime";
+        public static final String RTT_KEY_TAKING_TIME = "takingTime";
+    }
 }
