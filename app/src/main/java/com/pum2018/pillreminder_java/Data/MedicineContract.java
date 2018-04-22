@@ -10,6 +10,7 @@ public final class MedicineContract {
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
     public static final String PATH_MEDICINE = "Medicines";
     public static final String PATH_REPORT_TAKINGS = "ReportTakings";
+    public static final String PATH_PLAN = "Plan";
 
     public static final class Medicine implements BaseColumns{
 
@@ -55,5 +56,26 @@ public final class MedicineContract {
         public static final String RTT_KEY_MEDICINE_NAME = "medicineName";
         public static final String RTT_KEY_PLANNED_TIME = "plannedTime";
         public static final String RTT_KEY_TAKING_TIME = "takingTime";
+    }
+
+
+    public static final class Plan implements BaseColumns{
+        public static final Uri CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_PLAN);
+
+        // TAKINGS_PLAN_TABLE table columns:
+        public static final String TABLE_NAME = "Plan";
+        public static final String _ID = BaseColumns._ID;
+        public static final String TPT_KEY_HOUR = "hour";
+        public static final String TPT_KEY_MINUTE = "minute";
+        public static final String TPT_KEY_MEDICINE_ID = "medicine_id";
+        public static final String TPT_KEY_DOSE = "dose";
+        public static final String TPT_KEY_DAY_SUN = "day_sun";
+        public static final String TPT_KEY_DAY_MON = "day_mon";
+        public static final String TPT_KEY_DAY_TUE = "day_tue";
+        public static final String TPT_KEY_DAY_WED = "day_wed";
+        public static final String TPT_KEY_DAY_THU = "day_thu";
+        public static final String TPT_KEY_DAY_FRI = "day_fri";
+        public static final String TPT_KEY_DAY_SAT = "day_sat";
+
     }
 }
