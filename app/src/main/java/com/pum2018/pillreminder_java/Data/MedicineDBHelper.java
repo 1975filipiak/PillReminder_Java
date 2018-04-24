@@ -29,6 +29,28 @@ public class MedicineDBHelper extends SQLiteOpenHelper {
                 + MedicineContract.Report.RTT_KEY_PLANNED_TIME + " TEXT NOT NULL,"
                 + MedicineContract.Report.RTT_KEY_TAKING_TIME + " TEXT NOT NULL);";
         db.execSQL(SQL_CREATE_ENTRIES_REPORT_TAKINGS);
+
+        String SQL_CREATE_ENTRIES_PLAN = "CREATE TABLE " + MedicineContract.Plan.TABLE_NAME  + " ("
+                + MedicineContract.Plan._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + MedicineContract.Plan.TPT_KEY_HOUR + " INTEGER, "
+                + MedicineContract.Plan.TPT_KEY_MINUTE + " INTEGER, "
+                + MedicineContract.Plan.TPT_KEY_MEDICINE_ID + " INTEGER NOT NULL,"
+                + MedicineContract.Plan.TPT_KEY_DOSE + " INTEGER,"
+                + MedicineContract.Plan.TPT_KEY_DAY_SUN + " INTEGER DEFAULT 0,"
+                + MedicineContract.Plan.TPT_KEY_DAY_MON + " INTEGER DEFAULT 0,"
+                + MedicineContract.Plan.TPT_KEY_DAY_TUE + " INTEGER DEFAULT 0,"
+                + MedicineContract.Plan.TPT_KEY_DAY_WED + " INTEGER DEFAULT 0,"
+                + MedicineContract.Plan.TPT_KEY_DAY_THU + " INTEGER DEFAULT 0,"
+                + MedicineContract.Plan.TPT_KEY_DAY_FRI + " INTEGER DEFAULT 0,"
+                + MedicineContract.Plan.TPT_KEY_DAY_SAT + " INTEGER DEFAULT 0,"
+                + "FOREIGN KEY (" + MedicineContract.Plan.TPT_KEY_MEDICINE_ID + ") REFERENCES " + MedicineContract.Medicine.TABLE_NAME + "(" + MedicineContract.Medicine._ID + ") "
+                + ");";
+
+
+
+        db.execSQL(SQL_CREATE_ENTRIES_REPORT_TAKINGS);
+
+
     }
 
     @Override
