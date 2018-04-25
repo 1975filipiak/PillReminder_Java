@@ -10,7 +10,7 @@ public final class MedicineContract {
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
     public static final String PATH_MEDICINE = "Medicines";
     public static final String PATH_REPORT_TAKINGS = "ReportTakings";
-    public static final String PATH_PLAN = "Plan";
+    public static final String PATH_PLAN_TAKINGS = "PlanTakings";
 
     public static final class Medicine implements BaseColumns{
 
@@ -46,24 +46,25 @@ public final class MedicineContract {
         }
     }
 
-    public static final class Report implements BaseColumns{
+    public static final class ReportTaking implements BaseColumns{
 
         public static final Uri CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_REPORT_TAKINGS);
 
         public static final String TABLE_NAME = "ReportTakings";
         public static final String _ID = BaseColumns._ID;
-        public static final String RTT_KEY_DATE = "date";
-        public static final String RTT_KEY_MEDICINE_NAME = "medicineName";
-        public static final String RTT_KEY_PLANNED_TIME = "plannedTime";
-        public static final String RTT_KEY_TAKING_TIME = "takingTime";
+        public static final String COLUMN_RTT_KEY_DATE = "date";
+        public static final String COLUMN_RTT_KEY_MEDICINE_NAME = "medicineName";
+        public static final String COLUMN_RTT_KEY_PLANNED_TIME = "plannedTime";
+        public static final String COLUMN_RTT_KEY_TAKING_TIME = "takingTime";
     }
 
 
-    public static final class Plan implements BaseColumns{
-        public static final Uri CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_PLAN);
+    public static final class PlanTaking implements BaseColumns{
+
+        public static final Uri CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_PLAN_TAKINGS);
 
         // TAKINGS_PLAN_TABLE table columns:
-        public static final String TABLE_NAME = "Plan";
+        public static final String TABLE_NAME = "PlanTakings";
         public static final String _ID = BaseColumns._ID;
         public static final String TPT_KEY_HOUR = "hour";
         public static final String TPT_KEY_MINUTE = "minute";

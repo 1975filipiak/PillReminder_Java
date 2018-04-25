@@ -14,11 +14,15 @@ import android.util.Log;
 public class MedicineProvider extends ContentProvider{
 
     private static final int MEDICINE = 100;
+    private static final int REPORT = 200;
     private static final int MEDICINE_ID = 101;
+    private static final int REPORT_ID = 201;
     private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
     static {
         sUriMatcher.addURI(MedicineContract.CONTENT_AUTHORITY,MedicineContract.PATH_MEDICINE,MEDICINE);
         sUriMatcher.addURI(MedicineContract.CONTENT_AUTHORITY,MedicineContract.PATH_MEDICINE + "/#",MEDICINE_ID);
+        sUriMatcher.addURI(MedicineContract.CONTENT_AUTHORITY,MedicineContract.PATH_REPORT_TAKINGS,REPORT);
+        sUriMatcher.addURI(MedicineContract.CONTENT_AUTHORITY,MedicineContract.PATH_REPORT_TAKINGS + "/#",REPORT_ID);
     }
 
     MedicineDBHelper dbHelper;
@@ -69,6 +73,8 @@ public class MedicineProvider extends ContentProvider{
         switch (match) {
             case MEDICINE:
                 return insertMedicine(uri, contentValues);
+            case REPORT:
+                return  insertReportTakings(uri, contentValues);
             default:
                 Log.e(LOG_TAG, "Failed HERE " + uri);
                 throw new IllegalArgumentException("Insertion is not supported for " + uri);
@@ -99,6 +105,45 @@ public class MedicineProvider extends ContentProvider{
 
 
         long id = database.insert(MedicineContract.Medicine.TABLE_NAME, null, values);
+        // If the ID is -1, then the insertion failed. Log an error and return null.
+        if (id == -1) {
+            Log.e(LOG_TAG, "Failed to insert row for " + uri);
+            return null;
+        }
+        getContext().getContentResolver().notifyChange(uri,null);
+        // Return the new URI with the ID (of the newly inserted row) appended at the end
+        return ContentUris.withAppendedId(uri, id);
+    }
+
+    private Uri insertReportTakings(Uri uri, ContentValues values) {
+
+        String name = values.getAsString(MedicineContract.ReportTaking.COLUMN_RTT_KEY_MEDICINE_NAME);
+        if (name == null) {
+            throw new IllegalArgumentException("Medicine requires a name");
+        }
+
+
+        String date = values.getAsString(MedicineContract.ReportTaking.COLUMN_RTT_KEY_DATE);
+        if (date == null) {
+            throw new IllegalArgumentException("Provide key_date");
+        }
+
+
+        String takingTime = values.getAsString(MedicineContract.ReportTaking.COLUMN_RTT_KEY_TAKING_TIME);
+        if (takingTime == null) {
+            throw new IllegalArgumentException("Provide taking_time");
+        }
+
+        String plannedTime = values.getAsString(MedicineContract.ReportTaking.COLUMN_RTT_KEY_PLANNED_TIME);
+        if (plannedTime == null) {
+            throw new IllegalArgumentException("Provide planned_time");
+        }
+
+        SQLiteDatabase database = dbHelper.getWritableDatabase();
+
+
+
+        long id = database.insert(MedicineContract.ReportTaking.TABLE_NAME, null, values);
         // If the ID is -1, then the insertion failed. Log an error and return null.
         if (id == -1) {
             Log.e(LOG_TAG, "Failed to insert row for " + uri);
