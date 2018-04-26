@@ -63,7 +63,7 @@ public final class MedicineContract {
         public static final Uri CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_PLAN);
 
         // TAKINGS_PLAN_TABLE table columns:
-        public static final String TABLE_NAME = "Plan";
+        public static final String TABLE_NAME = "Plan1";
         public static final String _ID = BaseColumns._ID;
         public static final String TPT_KEY_HOUR = "hour";
         public static final String TPT_KEY_MINUTE = "minute";

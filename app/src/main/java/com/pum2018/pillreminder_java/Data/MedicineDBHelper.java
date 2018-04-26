@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class MedicineDBHelper extends SQLiteOpenHelper {
 
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
     public static final String DATABASE_NAME = "medicine.db";
 
     public MedicineDBHelper(Context context){
@@ -45,16 +45,20 @@ public class MedicineDBHelper extends SQLiteOpenHelper {
                 + MedicineContract.Plan.TPT_KEY_DAY_SAT + " INTEGER DEFAULT 0,"
                 + "FOREIGN KEY (" + MedicineContract.Plan.TPT_KEY_MEDICINE_ID + ") REFERENCES " + MedicineContract.Medicine.TABLE_NAME + "(" + MedicineContract.Medicine._ID + ") "
                 + ");";
-
-
-
-        db.execSQL(SQL_CREATE_ENTRIES_REPORT_TAKINGS);
+        db.execSQL(SQL_CREATE_ENTRIES_PLAN);
 
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        //DROP tables:
+        db.execSQL("DROP TABLE IF EXISTS " + MedicineContract.Medicine.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + MedicineContract.Plan.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + MedicineContract.Report.TABLE_NAME);
 
+        //Log.d("DB", "Metoda onUpgrade - Tabele w bazie zostaly skasowane.");
+        //Creating new version of tables:
+        onCreate(db);
     }
 }
